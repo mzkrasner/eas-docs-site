@@ -37,7 +37,7 @@ the address of the attester.
 
 ## Storing MetIRL Attestations on ComposeDB
 
-This tutorial will use the `MetIRL` attestation as an example to show how to store off-chain attestations to the Ceramic Network using ComposeDB, and will reference this [example repository](https://github.com/mzkrasner/eas-ceramic).
+This tutorial will use the `MetIRL` attestation as an example to show how to store off-chain attestations to the Ceramic Network using ComposeDB, and will reference this [example repository](https://github.com/ceramicstudio/ceramic-eas).
 
 For this tutorial, you will need:
 
@@ -49,7 +49,7 @@ For this tutorial, you will need:
 First, clone the repository and install your dependencies:
 
 ```bash
-git clone https://github.com/mzkrasner/eas-ceramic && cd eas-ceramic
+git clone https://github.com/ceramicstudio/ceramic-eas && cd ceramic-eas
 npm install
 ```
 
@@ -63,9 +63,9 @@ touch .env
 
 As you'll see in the .env.example, there are three environment variables you'll need to add to your new .env file. Since we will be using the Sepolia testnet for this tutorial, you can copy over the key-value pair for the `REACT_APP_CHAIN_ID` as-is.
 
-In order to support the `getAddressForENS` resolver method (outlined [here](https://github.com/mzkrasner/eas-ceramic/blob/main/utils/utils.ts)), you will need to create an [Alchemy](https://www.alchemy.com/) API Key. Since you can generate Ethereum Goerli API keys for free on Alchemy, this is what I recommend using (this is what the configuration options are set up to receive within the method definition).
+In order to support the `getAddressForENS` resolver method (outlined [here](https://github.com/ceramicstudio/ceramic-eas/blob/main/utils/utils.ts)), you will need to create an [Alchemy](https://www.alchemy.com/) API Key. Since you can generate Ethereum Goerli API keys for free on Alchemy, this is what I recommend using (this is what the configuration options are set up to receive within the method definition).
 
-Finally, since this tutorial assumes that the engineering team overseeing their Ceramic storage will be the controller of all attestation instances, a static 64-character alphanumeric seed phrase is needed for `AUTHOR_KEY` (for example, "dfabafa4149279e29d326b5f3eedd64c0faddc69ff089f2381f81249e5369842").
+Finally, since this tutorial assumes that the engineering team overseeing their Ceramic storage will be the controller of all attestation instances, a static 64-character alphanumeric seed phrase is needed for `AUTHOR_KEY` (for example, a dummy one here: "dfabafa4149279e29d326b5f3eedd64c0faddc69ff089f2381f81249e5369842").
 
 (For more information on controlling Accounts and Documents, visit [ComposeDB Concepts](https://composedb.js.org/docs/0.5.x/core-concepts)).
 
@@ -75,7 +75,7 @@ This tutorial shows developers how to run a local node with which they will depl
 
 In order to do this, a [server configuration](https://composedb.js.org/docs/0.5.x/guides/composedb-server/server-configurations) will have to be defined, as well as corresponding Ceramic node admin credentials.
 
-We've done most of this work for you using [this script](https://github.com/mzkrasner/eas-ceramic/blob/main/scripts/commands.mjs) we've provided. 
+We've done most of this work for you using [this script](https://github.com/ceramicstudio/ceramic-eas/blob/main/scripts/commands.mjs) we've provided. 
 
 To generate your credentials, run the following in your terminal:
 
