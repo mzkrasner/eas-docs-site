@@ -4,7 +4,7 @@ sidebar_position: 9
 
 # Storing on Ceramic
 
-In our [On-Chain vs Off-Chain](/docs/learn/on-vs-off-chain-attestations) section we discussed how off-chain attestations can be integrated with other decentralized networks to make it easier for developers to access and query attestations relevant to their communities. When querying attestations at scale, some of these storage options enable faster and more efficient processing, offering a suitable choice for projects that require high throughput.
+In our [On-Chain vs Off-Chain](../../docs/learn/on-vs-off-chain-attestations.md) section we discussed how off-chain attestations can be integrated with other decentralized networks to make it easier for developers to access and query attestations relevant to their communities. When querying attestations at scale, some of these storage options enable faster and more efficient processing, offering a suitable choice for projects that require high throughput.
 
 ## Ceramic Network
 
@@ -89,7 +89,7 @@ For more information on server configurations, visit [Server Configurations](htt
 
 ### Observe Your Schema Definitions
 
-You can find pre-made graphql schema definitions within your /composites directory. While there are three files, these represent only two distinct models in total - `Attestation` and `Confirm`. As outlined in the [Referenced Attestations](/docs/tutorials/referenced-attestations) tutorial, some attestations optionally allow for corresponding attestations to be referenced within a given instance. Within this MetIRL example, individuals have the option to both attest to meeting others (leveraging the `Attestation` model), and recipients of MetIRL attestations can provide confirmation (using `Confirm`).
+You can find pre-made graphql schema definitions within your /composites directory. While there are three files, these represent only two distinct models in total - `Attestation` and `Confirm`. As outlined in the [Referenced Attestations](./referenced-attestations) tutorial, some attestations optionally allow for corresponding attestations to be referenced within a given instance. Within this MetIRL example, individuals have the option to both attest to meeting others (leveraging the `Attestation` model), and recipients of MetIRL attestations can provide confirmation (using `Confirm`).
 
 The confirmConnect.graphql file exists only to dynamically define a list of `Confirm` instances within the existing `Attestation` model definition, thus making it easier for developers to query and check if an instance exists.
 
