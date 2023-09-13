@@ -175,7 +175,11 @@ Once your terminal reads `[NextJS] ready - started server on 0.0.0.0:3000, url: 
 
 If you visit the URL above with no extension, you should see a form labeled "**I attest** that I met". Before you begin generating attestations, you will need to connect your MetaMask wallet. You will also be prompted to switch to Sepolia testnet if you are connected to a different network.
 
+<div style={{textAlign: 'center'}}>
+
 ![MetIRL](./img/metirl.png)
+
+</div>
 
 After switching to Sepolia, you will have the option to make an off-chain attestation. Copy-paste an Ethereum address (other than the one you're currently signed in with) into the `Address/ENS` field, and click "Make Offchain attestation" - you will be prompted in MetaMask to sign the typed data (see [EIP712](https://eips.ethereum.org/EIPS/eip-712) for more on typed structured data hashing and signing).
 
