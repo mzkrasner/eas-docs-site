@@ -91,6 +91,70 @@ For more information on server configurations, visit [Server Configurations](htt
 
 You can find pre-made graphql schema definitions within your /composites directory. While there are three files, these represent only two distinct models in total - `Attestation` and `Confirm`. As outlined in the [Referenced Attestations](./referenced-attestations.md) tutorial, some attestations optionally allow for corresponding attestations to be referenced within a given instance. Within this MetIRL example, individuals have the option to both attest to meeting others (leveraging the `Attestation` model), and recipients of MetIRL attestations can provide confirmation (using `Confirm`).
 
+```graphql
+# attestation.graphql
+
+type Attestation @createModel(
+    accountRelation: LIST
+    description: "A simple attestation record model"
+  )
+  @createIndex(fields: [{ path: ["attester"] }])
+  @createIndex(fields: [{ path: ["recipient"] }])
+{
+  publisher: DID! @documentAccount 
+  version: CommitID! @documentVersion
+  uid: String! @string(minLength: 66, maxLength: 66)
+  schema: String! @string(minLength: 66, maxLength: 66)
+  attester: String! @string(minLength: 42, maxLength: 42)
+  recipient: String @string(minLength: 42, maxLength: 42)
+  expirationTime: DateTime
+  revocationTime: DateTime
+  refUID: String @string(minLength: 66, maxLength: 66)
+  time: String @string(maxLength: 12)
+  data: String! @string(maxLength: 1000000)
+}
+```
+```graphql
+# confirm.graphql
+
+type Attestation @loadModel(id: "$ATTESTATION_ID") {
+  id: ID!
+}
+
+type Confirm @createModel(
+    accountRelation: LIST
+    description: "A simple model to track attestation confirmations"
+  )
+  @createIndex(fields: [{ path: ["attester"] }])
+  @createIndex(fields: [{ path: ["recipient"] }])
+{
+  publisher: DID! @documentAccount 
+  version: CommitID! @documentVersion
+  uid: String! @string(minLength: 66, maxLength: 66)
+  schema: String! @string(minLength: 66, maxLength: 66)
+  attester: String! @string(minLength: 42, maxLength: 42)
+  recipient: String @string(minLength: 42, maxLength: 42)
+  expirationTime: DateTime
+  revocationTime: DateTime
+  refUID: String @string(minLength: 66, maxLength: 66)
+  time: String @string(maxLength: 12)
+  data: String! @string(maxLength: 1000000)
+  attestationId: StreamID! @documentReference(model: "Attestation")
+  attestation: Attestation! @relationDocument(property: "attestationId")
+}
+```
+```graphql
+# confirmConnect.graphql
+
+type Confirm @loadModel(id: "$CONFIRM_ID") {
+  id: ID!
+}
+
+type Attestation @loadModel(id: "$ATTESTATION_ID") {
+  confirm: [Confirm] @relationFrom(model: "Confirm", property: "attestationId")
+}
+```
+
 The confirmConnect.graphql file exists only to dynamically define a list of `Confirm` instances within the existing `Attestation` model definition, thus making it easier for developers to query and check if an instance exists.
 
 Finally, while there are a variety of different ways to compile data models into a composite and deploy on a local node, this repository outlines one opinionated way, found in /scripts/composites.mjs. When you launch the application, this script compiles the models into a composite definition that will then be deployed on your local node, and write those definitions to the files located in `/src/__generated__`, which will later be used by the ComposeDB client library to read and write data.
@@ -110,6 +174,8 @@ Once your terminal reads `[NextJS] ready - started server on 0.0.0.0:3000, url: 
 ### Generating Off-Chain Attestations
 
 If you visit the URL above with no extension, you should see a form labeled "**I attest** that I met". Before you begin generating attestations, you will need to connect your MetaMask wallet. You will also be prompted to switch to Sepolia testnet if you are connected to a different network.
+
+![MetIRL](./img/metirl.png)
 
 After switching to Sepolia, you will have the option to make an off-chain attestation. Copy-paste an Ethereum address (other than the one you're currently signed in with) into the `Address/ENS` field, and click "Make Offchain attestation" - you will be prompted in MetaMask to sign the typed data (see [EIP712](https://eips.ethereum.org/EIPS/eip-712) for more on typed structured data hashing and signing).
 
@@ -153,3 +219,13 @@ While this tutorial was intentionally built for storing off-chain attestations u
 - To move from Ceramic Testnet to Mainnet, visit [Access Ceramic Mainnet](https://composedb.js.org/docs/0.5.x/guides/composedb-server/access-mainnet).
 - To see how to authorize users using the `did:pkh` method and allow them to create their own documents on ComposeDB, visit this [Social App ComposeDB Starter](https://github.com/ceramicstudio/EthDenver2023Demo).
 - To allow users to encrypt and decrypt data on ComposeDB, visit this [Blog Article](https://blog.ceramic.network/tutorial-encrypted-data-on-composedb/).
+
+### Looking for Support from the Ceramic Team?
+
+Developers are encouraged to join the Ceramic community, engage with members from the Ceramic team, and ask for help along their development journey! Here are a few ways to get in touch:
+
+- Join the [Forum](https://forum.ceramic.network/) to ask questions and receive support
+- Join the [Discord](https://discord.com/invite/ceramic) to chat directly with both community members and the Ceramic team
+- Follow the Ceramic Network on [Twitter](https://twitter.com/ceramicnetwork) for updates
+- Browse technical tutorials and feature release announcements on the Ceramic [blog](https://blog.ceramic.network/)
+- Check out the [YouTube Channel](https://www.youtube.com/channel/UCgCLq5dx7sX-yUrrEbtYqVw) for presentations and videos
