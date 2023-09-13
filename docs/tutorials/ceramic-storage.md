@@ -199,6 +199,12 @@ Back in your browser console, you can view the logged confirmation that a Compos
 
 Back in your browser window you'll have the option to visit the "Connections" page (/connections). On load, you will see any attestations you just generated appear. Additionally, if you are the recipient of any MetIRL attestation instances, you'll have the option to confirm.
 
+<div style={{textAlign: 'center'}}>
+
+![connections](./img/connections.png)
+
+</div>
+
 This flow is tied to React lifecycle events outlined in /pages/connections.tsx. You'll notice how a useEffect hook is called to first check whether a wallet is connected, which then calls a `getAtts()` method. Similar to the previous page, this call hits another endpoint (`/api/all`), defined in /pages/api/all.ts.
 
 Notice how the GraphQL `attestationIndex` call queries the attestationIndex using a filter for where the attester or recipient is the account. This is because we want to pull both into our frontend and allow the user to confirm any MetIRL attestations pointed to them. It's important to note that you can only use filters and ordering queries on fields you've created indexes on (see /composites/attestation.graphql on lines 5 and 6).
@@ -208,6 +214,12 @@ For more on creating indices, visit the [Schemas](https://composedb.js.org/docs/
 ### Confirming Attestations
 
 If your MetaMask is set up with multiple accounts, create a MetIRL attestation from account "A" to account "B" and then sign into account "B". If you go to the /connections page while signed into account "B" you'll notice that your attestation from account "A" gives you the option to `Confirm we met`. 
+
+<div style={{textAlign: 'center'}}>
+
+![confirm connection](./img/confirmConnection.png)
+
+</div>
 
 Similar to the pattern outlined in /pages/index.tsx, you'll see the corresponding code for creating `Confirm` instances in /components/AttestationItem.tsx. One major difference to call out in this version is on line 92 - you will see that the `refUID` field now contains a dynamic input value which references the corresponding UID from the attestation loaded into that component. Line 75 also displays that a different schema is being used, this time with the name "Confirm".
 
