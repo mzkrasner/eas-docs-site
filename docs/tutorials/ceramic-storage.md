@@ -235,6 +235,7 @@ While this tutorial was intentionally built for storing off-chain attestations u
 - To move from Ceramic Testnet to Mainnet, visit [Access Ceramic Mainnet](https://composedb.js.org/docs/0.5.x/guides/composedb-server/access-mainnet).
 - To see how to authorize users using the `did:pkh` method and allow them to create their own documents on ComposeDB, visit this [Social App ComposeDB Starter](https://github.com/ceramicstudio/EthDenver2023Demo).
 - To allow users to encrypt and decrypt data on ComposeDB, visit this [Blog Article](https://blog.ceramic.network/tutorial-encrypted-data-on-composedb/).
+- Use the [ComposeDB API Sandbox](https://composedb.js.org/sandbox) to test example queries on a real dataset
 
 ### Looking for Support from the Ceramic Team?
 

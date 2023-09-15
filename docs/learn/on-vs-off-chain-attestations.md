@@ -57,3 +57,11 @@ In terms of interoperability, both on-chain and off-chain attestations can be in
 
 ## Choosing the right solution
 It's important to carefully consider the specific needs and goals of your project when deciding between on-chain and off-chain attestations. On-chain attestations are stored directly on the blockchain, making them highly secure and transparent. However, they may not be the best choice for storing sensitive information unless the data stored in the attestation record has been properly encrypted or provided through ZKPs. Off-chain attestations offer more privacy and flexibility, but they may not have the same level of security as on-chain attestations. It's important to carefully weigh the pros and cons of each option to determine which one is the best fit for your project.
+
+## Verifiable Data Ledger - a Third Option
+
+Some projects may require the scalability and cost efficiencies that coincide with off-chain attestations in addition to the added security and ease-of-verifiability benefits tied to on-chain transactions. Especially when dealing with a high volume of attestations (or relevant data more generally) at scale, engineering teams often find themselves unnecessarily giving up qualities like global consensus, immutability, and transparency in favor of faster performance and lower cost.
+
+There are, however, additional storage options designed to maximize on both scalability and decentralization, offering a less binary solution suitable for many use-cases, including off-chain attestations. For example, options like the Ceramic Network offer data-streaming and querying capabilities familiar to developers who have worked with Kafka, GraphQL, and relational databases, but built on a fully decentralized and open-source framework built on IPFS content addressing with "roll-up" publishing transactions directly on the Ethereum blockchain. *Learn how to store and retrieve off-chain attestations on Ceramic using ComposeDB in [this tutorial](../tutorials/ceramic-storage.md).*
+
+It's important for teams to consider the trade-offs between on-chain, off-chain, and non-conforming solutions like Verifiable Data Ledgers, and make the design choices best suited for their unique goals and use-cases. 
