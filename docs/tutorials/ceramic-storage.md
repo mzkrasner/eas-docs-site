@@ -92,7 +92,7 @@ For more information on server configurations, visit [Server Configurations](htt
 You can find pre-made graphql schema definitions within your /composites directory. While there are three files, these represent only two distinct models in total - `Attestation` and `Confirm`. As outlined in the [Referenced Attestations](./referenced-attestations.md) tutorial, some attestations optionally allow for corresponding attestations to be referenced within a given instance. Within this MetIRL example, individuals have the option to both attest to meeting others (leveraging the `Attestation` model), and recipients of MetIRL attestations can provide confirmation (using `Confirm`).
 
 ```graphql
-# attestation.graphql
+# 00-attestation.graphql
 
 type Attestation @createModel(
     accountRelation: LIST
@@ -102,20 +102,32 @@ type Attestation @createModel(
   @createIndex(fields: [{ path: ["recipient"] }])
 {
   publisher: DID! @documentAccount 
-  version: CommitID! @documentVersion
   uid: String! @string(minLength: 66, maxLength: 66)
   schema: String! @string(minLength: 66, maxLength: 66)
   attester: String! @string(minLength: 42, maxLength: 42)
+  verifyingContract: String! @string(minLength: 42, maxLength: 42)
+  easVersion: String! @string(maxLength: 5)
+  version: Int!
+  chainId: Int! 
+  r: String! @string(minLength: 66, maxLength: 66)
+  s: String! @string(minLength: 66, maxLength: 66)
+  v: Int! 
+  types: [Types] @list(maxLength: 100)
   recipient: String @string(minLength: 42, maxLength: 42)
   expirationTime: DateTime
   revocationTime: DateTime
   refUID: String @string(minLength: 66, maxLength: 66)
-  time: String @string(maxLength: 12)
+  time: Int! 
   data: String! @string(maxLength: 1000000)
+}
+
+type Types {
+  name: String! @string(maxLength: 20)
+  type: String! @string(maxLength: 20)
 }
 ```
 ```graphql
-# confirm.graphql
+# 01-confirm.graphql
 
 type Attestation @loadModel(id: "$ATTESTATION_ID") {
   id: ID!
@@ -129,22 +141,34 @@ type Confirm @createModel(
   @createIndex(fields: [{ path: ["recipient"] }])
 {
   publisher: DID! @documentAccount 
-  version: CommitID! @documentVersion
   uid: String! @string(minLength: 66, maxLength: 66)
   schema: String! @string(minLength: 66, maxLength: 66)
   attester: String! @string(minLength: 42, maxLength: 42)
+  verifyingContract: String! @string(minLength: 42, maxLength: 42)
+  easVersion: String! @string(maxLength: 5)
+  version: Int!
+  chainId: Int! 
+  r: String! @string(minLength: 66, maxLength: 66)
+  s: String! @string(minLength: 66, maxLength: 66)
+  v: Int! 
+  types: [Types] @list(maxLength: 100)
   recipient: String @string(minLength: 42, maxLength: 42)
   expirationTime: DateTime
   revocationTime: DateTime
   refUID: String @string(minLength: 66, maxLength: 66)
-  time: String @string(maxLength: 12)
+  time: Int!
   data: String! @string(maxLength: 1000000)
   attestationId: StreamID! @documentReference(model: "Attestation")
   attestation: Attestation! @relationDocument(property: "attestationId")
 }
+
+type Types {
+  name: String! @string(maxLength: 20)
+  type: String! @string(maxLength: 20)
+}
 ```
 ```graphql
-# confirmConnect.graphql
+# 02-confirmConnect.graphql
 
 type Confirm @loadModel(id: "$CONFIRM_ID") {
   id: ID!
@@ -177,7 +201,7 @@ If you visit the URL above with no extension, you should see a form labeled "**I
 
 <div style={{textAlign: 'center'}}>
 
-![MetIRL](./img/metirl.png)
+![MetIRL](./img/metirlattest.png)
 
 </div>
 
@@ -226,6 +250,18 @@ Similar to the pattern outlined in /pages/index.tsx, you'll see the correspondin
 Finally, note how the API endpoint used in this flow ("/api/confirmAttest") generates a `Confirm` instance within /pages/api/confirmAttest.ts. Given the Confirm + Attestation relation definition explained above (within /composites/confirmConnect.graphql), this confirmation will now automatically be able to be queried from the `Attestation` instance it points to using the "confirm" field.
 
 Go ahead and press the `Confirm we met` button to try this out for yourself.
+
+### Validating Attestations
+
+As outlined in the [Verifying Offchain Attestations](https://github.com/ethereum-attestation-service/eas-sdk#verify-an-offchain-attestation) section of the eas-sdk README, developers also have the ability to validate these offchain instances by invoking the `verifyOffchainAttestationSignature` method within each `Offchain` class. Given that we're saving the full anatomy of each offchain attestation to Ceramic, all of the properties necessary to invoke this method are available on each ComposeDB `Attestation` and `Confirm` instance.
+
+<div style={{textAlign: 'center'}}>
+
+![validate attestation](./img/validateOffchain.png)
+
+</div>
+
+Navigate to the "Verify" page (/verify) and open the /pages/verify.tsx and /components/AttestToVerify.tsx files in your text editor to observe how this method is being invoked. More specifically, observe how we deconstruct the `data` props passed down to /components/AttestToVerify.tsx between lines 66-97 to form an "attestation" object, and how that object is eventually fed into the invocation of `verifyOffchainAttestationSignature` on line 109.
 
 ## Next Steps
 
